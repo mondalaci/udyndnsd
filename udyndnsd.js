@@ -24,7 +24,14 @@ dns.createServer().on('request', function(req, res) {
 }).serve(DNS_PORT);
 
 var HTTP_PORT = 8080;
-var app = express().get('/update', function(req, res) {
+var app = express().get('/', function(req, res) {
+    var html = '';
+    for (domain in domains) {
+        ipAddress = domains[domain];
+        html += domain + ' &rarr; ' + ipAddress + '<br>\n';
+    }
+    res.send(html);
+}).get('/update', function(req, res) {
     var domain = req.query.domain;
     var clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
