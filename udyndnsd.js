@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-var DNS_PORT = 53;
-
 var fs = require('fs');
 var dns = require('native-dns');
+var express = require('express');
 
 var config = JSON.parse(fs.readFileSync('/etc/udyndnsd.json'));
 var domains = config.domains;
 
-var dnsServer = dns.createServer()
-.on('request', function(req, res) {
+var DNS_PORT = 53;
+dns.createServer().on('request', function(req, res) {
     var hostname = req.question[0].name;
     console.log('request', hostname);
 
@@ -22,6 +21,20 @@ var dnsServer = dns.createServer()
     }
 
     res.send();
-});
+}).serve(DNS_PORT);
 
-dnsServer.serve(DNS_PORT);
+var HTTP_PORT = 8080;
+var app = express().get('/update', function(req, res) {
+    var domain = req.query.domain;
+    var clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    res.setHeader('content-type', 'text/plain');
+
+    if (!domain) {
+        res.send('ERROR\nMandatory domain parameter not specified.');
+        return;
+    }
+
+    domains[domain] = clientIp;
+    res.send('UPDATED\n' + domain + ' set to ' + clientIp);
+}).listen(HTTP_PORT);
