@@ -1,0 +1,16 @@
+{
+    "name": "udyndnsd",
+    "version": "0.0.1",
+    "description": "Micro dynamic DNS server",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mondalaci/udyndnsd"
+    },
+    "bin": "udyndnsd.js",
+    "dependencies": {
+        "native-dns": "*",
+        "express": "*"
+    },
+    "author": "László Monda",
+    "license": "GPLv3"
+}
