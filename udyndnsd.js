@@ -21,6 +21,8 @@ dns.createServer().on('request', function(req, res) {
     }
 
     res.send();
+}).on('socketError', function(event, error, socket) {
+    console.log('socketError:', event, error, socket);
 }).serve(DNS_PORT);
 
 var HTTP_PORT = 8080;
