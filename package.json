@@ -8,8 +8,8 @@
     },
     "bin": "udyndnsd.js",
     "dependencies": {
-        "native-dns": "*",
-        "express": "*"
+        "native-dns": "0.*",
+        "express": "4.*"
     },
     "author": "László Monda",
     "license": "GPLv3"
