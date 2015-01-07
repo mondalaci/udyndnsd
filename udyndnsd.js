@@ -4,7 +4,8 @@ var fs = require('fs');
 var dns = require('native-dns');
 var express = require('express');
 
-var config = JSON.parse(fs.readFileSync('/etc/udyndnsd.json'));
+var config_filename = '/etc/udyndnsd.json';
+var config = JSON.parse(fs.readFileSync(config_filename));
 var domains = config.domains;
 
 var DNS_PORT = 53;
@@ -46,4 +47,5 @@ var app = express().get('/', function(req, res) {
 
     domains[domain] = clientIp;
     res.send('UPDATED\n' + domain + ' set to ' + clientIp);
+    fs.writeFileSync(config_filename, JSON.stringify(config, null, 4));
 }).listen(HTTP_PORT);
