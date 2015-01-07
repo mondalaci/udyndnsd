@@ -4,6 +4,7 @@ var fs = require('fs');
 var dns = require('native-dns');
 var express = require('express');
 
+var DNS_PORT = 53;
 var DEFAULT_HTTP_PORT = 8080;
 var DEFAULT_TTL = 1; // seconds
 
@@ -17,7 +18,6 @@ if (!config.ttl) {
     config.ttl = DEFAULT_TTL;
 }
 
-var DNS_PORT = 53;
 dns.createServer().on('request', function(req, res) {
     var hostname = req.question[0].name;
     console.log('request', hostname);
