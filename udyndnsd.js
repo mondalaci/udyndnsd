@@ -17,6 +17,11 @@ if (!config.httpPort) {
 if (!config.ttl) {
     config.ttl = DEFAULT_TTL;
 }
+saveConfig();
+
+function saveConfig() {
+    fs.writeFileSync(config_filename, JSON.stringify(config, null, 4));
+}
 
 dns.createServer().on('request', function(req, res) {
     var hostname = req.question[0].name;
@@ -55,5 +60,5 @@ express().get('/', function(req, res) {
 
     domains[domain] = clientIp;
     res.send('UPDATED\n' + domain + ' set to ' + clientIp);
-    fs.writeFileSync(config_filename, JSON.stringify(config, null, 4));
+    saveConfig();
 }).listen(config.httpPort);
