@@ -4,9 +4,14 @@ var fs = require('fs');
 var dns = require('native-dns');
 var express = require('express');
 
+var DEFAULT_HTTP_PORT = 8080;
+
 var config_filename = '/etc/udyndnsd.json';
 var config = JSON.parse(fs.readFileSync(config_filename));
 var domains = config.domains;
+if (!config.httpPort) {
+    config.httpPort = DEFAULT_HTTP_PORT;
+}
 
 var DNS_PORT = 53;
 dns.createServer().on('request', function(req, res) {
@@ -26,7 +31,6 @@ dns.createServer().on('request', function(req, res) {
     console.log('socketError:', event, error, socket);
 }).serve(DNS_PORT);
 
-var HTTP_PORT = 8080;
 express().get('/', function(req, res) {
     var html = '';
     for (domain in domains) {
@@ -48,4 +52,4 @@ express().get('/', function(req, res) {
     domains[domain] = clientIp;
     res.send('UPDATED\n' + domain + ' set to ' + clientIp);
     fs.writeFileSync(config_filename, JSON.stringify(config, null, 4));
-}).listen(HTTP_PORT);
+}).listen(config.httpPort);
