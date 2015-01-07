@@ -27,7 +27,7 @@ dns.createServer().on('request', function(req, res) {
 }).serve(DNS_PORT);
 
 var HTTP_PORT = 8080;
-var app = express().get('/', function(req, res) {
+express().get('/', function(req, res) {
     var html = '';
     for (domain in domains) {
         ipAddress = domains[domain];
