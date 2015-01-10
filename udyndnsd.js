@@ -41,10 +41,16 @@ dns.createServer().on('request', function(req, res) {
 }).serve(DNS_PORT);
 
 express().get('/', function(req, res) {
+    var domainToBeDeleted = req.query.delete;
+    if (domainToBeDeleted) {
+        delete domains[domainToBeDeleted];
+        saveConfig();
+    }
+
     var html = '';
     for (domain in domains) {
         ipAddress = domains[domain];
-        html += domain + ' &rarr; ' + ipAddress + '<br>\n';
+        html += domain + ' &rarr; ' + ipAddress + ' (<a href="?delete=' + domain + '">delete</a>)<br>\n';
     }
     res.send(html);
 }).get('/update', function(req, res) {
