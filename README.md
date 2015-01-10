@@ -1,4 +1,4 @@
-μdyndnsd - a minimalistic dynamic DNS server
-============================================
+μdyndnsd
+========
 
-Micro dynamic DNS server
+μdyndnsd is a minimalistic dynamic DNS server running on node.
